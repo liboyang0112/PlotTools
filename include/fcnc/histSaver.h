@@ -139,6 +139,12 @@ public:
   void set_weight(Float_t* _weight){ fweight = _weight; weight_type = 1;}
   void set_weight(Double_t* _weight){ dweight = _weight; weight_type = 2;}
   void write();
+  // hadhad FF
+  void FakeFactorMethod(TString final_region, TString _1m1lregion,TString _1l1mregion,TString _1l1nregion,TString _1n1lregion,TString _2nregion,TString variation,TString newsamplename,TString newsampletitle,std::vector<TString> tmp_regions,enum EColor color,bool SBplot);
+  void FakeFactorMethod(TString final_region, TString _1m1lnmregion,TString _1lnm1mregion,TString _2nregion,TString variation,TString newsamplename,TString newsampletitle,std::vector<TString> tmp_regions,enum EColor color,bool SBplot);
+  void FakeFactorMethod(TString final_region, TString _reg1mtau1ltau1b2jos,TString variation,TString newsamplename,TString newsampletitle,std::vector<TString> tmp_regions,enum EColor color,bool SBplot);
+  std::vector<observable> derive_ff(std::string formula,std::vector<TString> region_numerator,std::vector<TString> region_denominator,TString variable);
+  
 };
 
 
