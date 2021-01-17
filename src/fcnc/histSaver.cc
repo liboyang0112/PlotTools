@@ -1020,27 +1020,12 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
     if(muted) continue;
     gSystem->mkdir(outdir + "/" + region);
 
-    std::string regtitle = region.Data();
-    findAndReplaceAll(regtitle,"reg","");
-    findAndReplaceAll(regtitle,"vetobtagwp70","");
-    findAndReplaceAll(regtitle,"highmet","");
-    findAndReplaceAll(regtitle,"_","");
-    std::string labeltitle = regtitle;
-    findAndReplaceAll(regtitle,"1l1tau1b2j_ss","l$\\tauhad$ 2j");
-    findAndReplaceAll(regtitle,"1l1tau1b1j_ss","l$\\tauhad$ 1j");
-    findAndReplaceAll(regtitle,"1l1tau1b3j_","TTH $\\tlhad$ ");
-    findAndReplaceAll(regtitle,"1l1tau1b2j_os","STH $\\tlhad$ ");
-    findAndReplaceAll(regtitle,"1l2tau1bnj_","$l\\thadhad$ ");
-    findAndReplaceAll(regtitle,"1l2tau2bnj_","$l\\thadhad$ 2b ");
-    //findAndReplaceAll(regtitle,"2lSS1tau1bnj_","$2lSS\\thad$ ");
-    //findAndReplaceAll(regtitle,"2lSS1tau2bnj_","$2lSS\\thad$ 2b ");
-    findAndReplaceAll(regtitle,"_"," ");
     auto tableIter = regioninTables.find(region);
-
-    string labeltitle_ = tableIter->second;
-    findAndReplaceAll(labeltitle_,"\\tauhad","#tau_{had}");
-    findAndReplaceAll(labeltitle_,"\\tlhad","#tau_{lep}#tau_{had}");
-    findAndReplaceAll(labeltitle_,"\\thadhad","#tau_{had}#tau_{had}");
+    if(tableIter == regioninTables.end()) continue;
+    string labeltitle = tableIter->second;
+    findAndReplaceAll(labeltitle,"\\tauhad","#tau_{had}");
+    findAndReplaceAll(labeltitle,"\\tlhad","#tau_{lep}#tau_{had}");
+    findAndReplaceAll(labeltitle,"\\thadhad","#tau_{had}#tau_{had}");
 
 
     for (int i = 0; i < v.size(); ++i){
