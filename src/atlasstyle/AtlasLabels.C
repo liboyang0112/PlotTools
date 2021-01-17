@@ -13,24 +13,25 @@ void ATLASLabel(Double_t x,Double_t y,const char* text,Color_t color, const char
   l.SetNDC();
 //   l.SetTextFont(72);
   l.SetTextFont(73);
-  l.SetTextSize(12);
+  l.SetTextSize(15);
   l.SetTextColor(color);
 
-  double delx = 0.05*696*gPad->GetWh()/(472*gPad->GetWw());
-  double dely = 0.06;
+  double delx = 0.06*696*gPad->GetWh()/(472*gPad->GetWw());
+  double dely = 0.05;
   l.DrawLatex(x,y,"ATLAS");
   if (text) {
     TLatex p;
     p.SetNDC();
 //     p.SetTextFont(42);
     p.SetTextFont(43);
-    p.SetTextSize(12);
+    p.SetTextSize(15);
     p.SetTextColor(color);
     p.DrawLatex(x+delx,y,text);
     if(channelname){
       p.DrawLatex(x,y-dely,lumi);
       p.DrawLatex(x,y-2*dely,analysis);
-      p.DrawLatex(x,y-3*dely,channelname);
+      p.SetTextSize(23);
+      p.DrawLatex(x,y-3*dely-0.02,channelname);
     }
   }
 }

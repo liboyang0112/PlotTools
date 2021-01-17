@@ -1017,7 +1017,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
     if(muted) continue;
     gSystem->mkdir(outdir + "/" + region);
     auto tableIter = regioninTables.find(region);
-
+    if(tableIter == regioninTables.end()) continue;
     string labeltitle = tableIter->second;
     findAndReplaceAll(labeltitle,"\\tauhad","#tau_{had}");
     findAndReplaceAll(labeltitle,"\\tlhad","#tau_{lep}#tau_{had}");
@@ -1033,7 +1033,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       hmc.Sumw2();
       THStack *hsk = new THStack(v.at(i)->name.Data(),v.at(i)->name.Data());
       TLegend* lg1 = 0;
-      lg1 = new TLegend(0.45,0.7,0.97,0.95,"");
+      lg1 = new TLegend(0.38,0.68,1,1,"");
       lg1->SetNColumns(2);
       if(debug) printf("set hists\n");
       for(auto& iter:stackorder ){
@@ -1053,6 +1053,11 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
           findAndReplaceAll(latexsamptitle,"rightarrow","to");
           if(latexsamptitle.find("#")!=std::string::npos) latexsamptitle = "$" + latexsamptitle + "$";
           findAndReplaceAll(latexsamptitle,"#","\\");
+          if(find(yield_chart->rows.begin(),yield_chart->rows.end(),latexsamptitle) == yield_chart->rows.end()){
+            auto bkgrow = find(yield_chart->rows.begin(),yield_chart->rows.end(),"background");
+            if(bkgrow!=yield_chart->rows.end())
+              yield_chart->rows.insert(bkgrow,latexsamptitle);
+          }
           yield_chart->set(latexsamptitle,tableIter->second,integral(buffer.back()));
         }
 
@@ -1105,10 +1110,10 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       char str[30];
       sprintf(str,"Events / %4.2f %s",binwidth(i)*v.at(i)->rebin, v.at(i)->unit.Data());
       hsk->GetYaxis()->SetTitle(str);
-      hsk->GetYaxis()->SetTitleOffset(1.6);
-      hsk->GetYaxis()->SetLabelSize(hsk->GetYaxis()->GetLabelSize()*0.7);
-      hsk->GetXaxis()->SetLabelSize(hsk->GetXaxis()->GetLabelSize()*0.7);
-      hsk->GetYaxis()->SetTitleSize(hsk->GetYaxis()->GetTitleSize()*0.7);
+      //hsk->GetYaxis()->SetTitleOffset(1.6);
+      hsk->GetYaxis()->SetLabelSize(hsk->GetYaxis()->GetLabelSize()*0.95);
+      //hsk->GetXaxis()->SetLabelSize(hsk->GetXaxis()->GetLabelSize()*0.7);
+      //hsk->GetYaxis()->SetTitleSize(hsk->GetYaxis()->GetTitleSize()*0.7);
 
       for(Int_t j=1; j<v.at(i)->nbins/v[i]->rebin+1; j++) {
         hmcR.SetBinContent(j,1);
@@ -1190,13 +1195,14 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       }
       hmcR.SetMaximum(1.5);
       hmcR.SetMinimum(0.5);
-      hmcR.GetYaxis()->SetNdivisions(504,false);
+      hmcR.GetYaxis()->SetRangeUser(0.5,1.49);
+      hmcR.GetYaxis()->SetNdivisions(508,true);
       hmcR.GetYaxis()->SetTitle("Data/Bkg");
-      hmcR.GetYaxis()->SetTitleOffset(hdataR.GetYaxis()->GetTitleOffset()*1.08);
+      //hmcR.GetYaxis()->SetTitleOffset(hdataR.GetYaxis()->GetTitleOffset()*1.5);
       hmcR.GetYaxis()->CenterTitle();
       hmcR.GetXaxis()->SetTitle(v.at(i)->unit == "" ? v.at(i)->title.Data() : (v.at(i)->title + " [" + v.at(i)->unit + "]").Data());
-      hmcR.GetXaxis()->SetTitleSize(hdataR.GetXaxis()->GetTitleSize()*0.7);
-      hmcR.GetYaxis()->SetTitleSize(hdataR.GetYaxis()->GetTitleSize()*0.7);
+      //hmcR.GetXaxis()->SetTitleSize(hdataR.GetXaxis()->GetTitleSize()*0.7);
+      //hmcR.GetYaxis()->SetTitleSize(hdataR.GetYaxis()->GetTitleSize()*0.7);
       hmcR.SetFillColor(1);
       hmcR.SetLineColor(0);
       hmcR.SetMarkerStyle(1);
@@ -1204,8 +1210,8 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       hmcR.SetMarkerColor(1);
       hmcR.SetFillStyle(3004);
       hmcR.GetXaxis()->SetTitleOffset(3.4);
-      hmcR.GetXaxis()->SetLabelSize(hdataR.GetXaxis()->GetLabelSize()*0.7); 
-      hmcR.GetYaxis()->SetLabelSize(hdataR.GetYaxis()->GetLabelSize()*0.7); 
+      //hmcR.GetXaxis()->SetLabelSize(hdataR.GetXaxis()->GetLabelSize()*0.7); 
+      //hmcR.GetYaxis()->SetLabelSize(hdataR.GetYaxis()->GetLabelSize()*0.7); 
       if(debug) printf("plot mc ratio\n");
       hmcR.Draw("E2 same");
       if(debug) printf("plot data ratio\n");

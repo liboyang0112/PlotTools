@@ -54,9 +54,9 @@ void LatexChart::print(std::string filename){
 		for (int ivec = 0; ivec < nvec; ++ivec)
 		{
 			if((currentnrow+=rows.size()+1) > maxrow){
-				currentnrow=0;
+				currentnrow=rows.size()+1;
 				file->close();
-				(*file).open(filename+"_"+char(nfile+1)+".tex");
+				(*file).open(filename+"_"+char(++nfile)+".tex");
 				(*file)<<"\\centering\n";
 			}
 			for (int i = 0; i < averagelow+1; ++i)
@@ -67,7 +67,6 @@ void LatexChart::print(std::string filename){
 			}
 			writeContent(new_columns, file);
 			new_columns.clear();
-			currentnrow+=rows.size()+1;
 		}
 	}else{
 		writeContent(columns, file);
