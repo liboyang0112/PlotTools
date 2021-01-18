@@ -1295,6 +1295,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
   if(yield_chart->rows.size()){
     yield_chart->caption = "The sample and data yield before the fit.";
     yield_chart->print((outputchartdir + "/" + "yield_chart").Data());
+  }
   if(sgnf_chart->rows.size()){
     sgnf_chart->caption = "The stat. only significance of the signal in each regions with the benchmark $\\mu$ value.";
     sgnf_chart->print((outputchartdir + "/" + "significance_chart").Data());
