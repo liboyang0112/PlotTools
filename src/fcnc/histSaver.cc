@@ -1052,7 +1052,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
         hsk->Add(buffer.back());
         hmc.Add(buffer.back());
 
-        if(i == 0 && tableIter!=regioninTables.end()) {
+        if(yieldvariable == v.at(i)->name && tableIter!=regioninTables.end()) {
           std::string latexsamptitle = buffer.back()->GetTitle();
           findAndReplaceAll(latexsamptitle,"rightarrow","to");
           if(latexsamptitle.find("#")!=std::string::npos) latexsamptitle = "$" + latexsamptitle + "$";
@@ -1141,7 +1141,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       std::vector<TH1D*> activeoverlay;
       if(debug) printf("set blinding\n");
 
-      if(i == 0 && tableIter!=regioninTables.end()) {
+      if(yieldvariable == v.at(i)->name && tableIter!=regioninTables.end()) {
         yield_chart->set("background",tableIter->second,integral(&hmc));
         if(dataref){
           yield_chart->set("data",tableIter->second,integral(datahist));
@@ -1257,7 +1257,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
         findAndReplaceAll(samptitle,"#","\\");
         findAndReplaceAll(samptitle,"%","\\%");
         findAndReplaceAll(samptitle,"rightarrow","to ");
-        if(i==0 && tableIter!=regioninTables.end()) yield_chart->set(samptitle,tableIter->second,integral(histoverlay));
+        if(yieldvariable == v.at(i)->name && tableIter!=regioninTables.end()) yield_chart->set(samptitle,tableIter->second,integral(histoverlay));
 
         if(sensitivevariable == v.at(i)->name && tableIter!=regioninTables.end()){
           double _significance = 0;

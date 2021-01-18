@@ -70,6 +70,7 @@ public:
   std::map<TString,std::vector<TString>> merge_suffix;
   TString outputfilename;
   TString sensitivevariable;
+  TString yieldvariable;
   std::map<TString, std::map<TString, std::map<TString, std::vector<TH1D*> > > > plot_lib; //plot_lib[sample][region][variation][var]
   std::vector<TString> regions;
   std::vector<fcncSample> samples;
