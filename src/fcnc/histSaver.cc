@@ -1057,6 +1057,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
           findAndReplaceAll(latexsamptitle,"rightarrow","to");
           if(latexsamptitle.find("#")!=std::string::npos) latexsamptitle = "$" + latexsamptitle + "$";
           findAndReplaceAll(latexsamptitle,"#","\\");
+          findAndReplaceAll(latexsamptitle," ","~");
           if(find(yield_chart->rows.begin(),yield_chart->rows.end(),latexsamptitle) == yield_chart->rows.end()){
             auto bkgrow = find(yield_chart->rows.begin(),yield_chart->rows.end(),"background");
             if(bkgrow!=yield_chart->rows.end())
