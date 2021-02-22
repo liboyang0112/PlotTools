@@ -129,7 +129,7 @@ public:
   void merge_regions(std::vector<TString> inputregions, TString outputregion);
   Float_t getVal(Int_t i);
   float binwidth(int i);
-  void read_sample(TString samplename, TString savehistname, TString NPname, TString sampleTitle, enum EColor color, double norm, TFile *_inputfile=0);
+  void read_sample(TString samplename, TString savehistname, TString NPname, TString sampleTitle, enum EColor color, double norm, TFile *_inputfile=0, bool applyVariation=1);
   void plot_stack(TString NPname,TString outputdir = ".",TString outputchartdir = ".");
   void fill_hist(TString sample, TString region, TString variation);
   void fill_hist(TString sample, TString region);

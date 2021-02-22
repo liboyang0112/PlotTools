@@ -642,7 +642,7 @@ vector<int> histSaver::resolveslices(TH1D* target, const vector<double> *slices)
   return ret;
 }
 
-void histSaver::read_sample(TString samplename, TString savehistname, TString variation, TString sampleTitle, enum EColor color, double norm, TFile *_inputfile){
+void histSaver::read_sample(TString samplename, TString savehistname, TString variation, TString sampleTitle, enum EColor color, double norm, TFile *_inputfile, bool applyVariation){
 
   TFile *readfromfile;
 
@@ -661,7 +661,7 @@ void histSaver::read_sample(TString samplename, TString savehistname, TString va
     if(filename.Contains("NOMINAL") && variation.Contains("Xsec")){
       histname = histnameorig + "NOMINAL_" + region + "_";
     }else{
-      histname = histnameorig + variation + "_" + region + "_";
+      histname = histnameorig + (applyVariation?variation:"NOMINAL") + "_" + region + "_";
     }
     if (debug == 1)
     {
