@@ -819,7 +819,7 @@ void histSaver::write(){
           }
           outputfile[variation.first]->cd();
           for (int i = 0; i < v.size(); ++i){
-            if(variation.second[i]->GetMaximum() == sum) {
+            if(variation.second[i]->GetMaximum() == sum && variation.second[i]->GetEntries()>10) {
               continue;
             }
             //if(grabhist(iter.first,region,i)->Integral() == 0) {
@@ -1006,6 +1006,9 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
   TGaxis::SetMaxDigits(3);
   LatexChart* yield_chart = new LatexChart("yield");
   LatexChart* sgnf_chart = new LatexChart("significance");
+  sgnf_chart->maxcolumn = 6;
+  yield_chart->maxcolumn = 4;
+  double maxfactor=1.7;
   gSystem->mkdir(outdir);
   gSystem->mkdir(outputchartdir);
   TCanvas cv("cv","cv",600,600);
@@ -1037,7 +1040,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       hmc.Sumw2();
       THStack *hsk = new THStack(v.at(i)->name.Data(),v.at(i)->name.Data());
       TLegend* lg1 = 0;
-      lg1 = new TLegend(0.38,0.68,1,1,"");
+      lg1 = new TLegend(0.38,0.918/maxfactor,0.88,0.92,"");
       lg1->SetNColumns(2);
       if(debug) printf("set hists\n");
       for(auto& iter:stackorder ){
@@ -1100,7 +1103,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       int ratio = 0;
 
       if(debug) printf("set hsk\n");
-      hsk->SetMaximum(1.35*histmax);
+      hsk->SetMaximum(maxfactor*histmax);
 
       cv.SaveAs(outdir + "/" + region + "/" + v[i]->name + ".pdf[");
       cv.cd();
@@ -1295,6 +1298,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
   }
   if(yield_chart->rows.size()){
     yield_chart->caption = "The sample and data yield before the fit.";
+    if(yield_chart->columns.size()==5) yield_chart->maxcolumn=5;
     yield_chart->print((outputchartdir + "/" + "yield_chart").Data());
   }
   if(sgnf_chart->rows.size()){
