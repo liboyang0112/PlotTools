@@ -807,30 +807,28 @@ void histSaver::write(){
   for(auto& iter: outputfile){
     for(auto& sample : plot_lib){
       for(auto& region: sample.second) {
-        for(auto& variation : region.second){
-          if(variation.first != iter.first) {
-            continue;
-          }
-          double sum = variation.second[0]->Integral();
-          if(sum == 0) continue;
-          if(sum != sum) {
-            printf("Warning: hist integral is nan, skip writing for %s\n", variation.second[0]->GetName());
-            continue;
-          }
-          outputfile[variation.first]->cd();
-          for (int i = 0; i < v.size(); ++i){
-            if(variation.second[i]->GetMaximum() == sum && variation.second[i]->GetEntries()>10) {
-              continue;
-            }
-            //if(grabhist(iter.first,region,i)->Integral() == 0) {
-            //  printf("Warning: histogram is empty: %s, %s, %d\n", iter.first.Data(),region.Data(),i);
-            //}
-            TString writename = variation.second[i]->GetName();
-            writename.Remove(writename.Sizeof()-8,7); //remove "_buffer"
-            if(debug) printf("write histogram: %s\n", writename.Data());
-            variation.second[i]->Write(writename,TObject::kWriteDelete);
-          }
+        auto variation = region.second.find(iter.first);
+        if(variation == region.second.end()) continue;
+        double sum = variation->second[0]->Integral();
+        if(sum == 0) continue;
+        if(sum != sum) {
+          printf("Warning: hist integral is nan, skip writing for %s\n", variation->second[0]->GetName());
+          continue;
         }
+        outputfile[variation->first]->cd();
+        for (int i = 0; i < v.size(); ++i){
+          if(variation->second[i]->GetMaximum() == sum && variation->second[i]->GetEntries()>10) {
+            continue;
+          }
+          //if(grabhist(iter.first,region,i)->Integral() == 0) {
+          //  printf("Warning: histogram is empty: %s, %s, %d\n", iter.first.Data(),region.Data(),i);
+          //}
+          TString writename = variation->second[i]->GetName();
+          writename.Remove(writename.Sizeof()-8,7); //remove "_buffer"
+          if(debug) printf("write histogram: %s\n", writename.Data());
+          variation->second[i]->Write(writename,TObject::kWriteDelete);
+        }
+        
       }
     }
     iter.second->Close();
