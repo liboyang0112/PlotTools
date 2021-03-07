@@ -1026,9 +1026,9 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
         muted = 1;
     }
     if(muted) continue;
-    gSystem->mkdir(outdir + "/" + region);
     auto tableIter = regioninTables.find(region);
     if(tableIter == regioninTables.end()) continue;
+    gSystem->mkdir(outdir + "/" + region);
     string labeltitle = tableIter->second;
     findAndReplaceAll(labeltitle,"\\tauhad","#tau_{had}");
     findAndReplaceAll(labeltitle,"\\tlhad","#tau_{lep}#tau_{had}");
