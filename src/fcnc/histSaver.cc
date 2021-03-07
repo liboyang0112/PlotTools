@@ -905,21 +905,17 @@ observable histSaver::templatesample(TString fromregion, TString variation,strin
   if(tokens.size()%2) printf("Error: Wrong formula format: %s\nShould be like: 1 data -1 real -1 zll ...", formula.c_str());
   vector<TH1D*> newvec;
   observable scaleto(0,0);
-  auto sampleiter = plot_lib.find(newsamplename);
-  if(sampleiter != plot_lib.end()){
-    newvec = sampleiter->second.begin()->second.at(variation);
-  }else{
-    for (int ivar = 0; ivar < v.size(); ++ivar)
-    {
-      TH1D *target = grabhist(tokens[1],fromregion, tokens[1] == "data" ? "NOMINAL" : variation,ivar);
-      if(target){
-        newvec.push_back((TH1D*)target->Clone(newsamplename+"_"+toregion+v[ivar]->name));
-        newvec[ivar]->Reset();
-        newvec[ivar]->SetNameTitle(newsamplename,newsampletitle);
-        newvec[ivar]->SetFillColor(color);
-      }else{
-        newvec.push_back(0);
-      }
+  bool sampexist = find_sample(newsamplename);
+  for (int ivar = 0; ivar < v.size(); ++ivar)
+  {
+    TH1D *target = grabhist(tokens[1],fromregion, tokens[1] == "data" ? "NOMINAL" : variation,ivar);
+    if(target){
+      newvec.push_back((TH1D*)target->Clone(sampexist?"tmp":""+newsamplename+"_"+toregion+v[ivar]->name));
+      newvec[ivar]->Reset();
+      newvec[ivar]->SetNameTitle(newsamplename,newsampletitle);
+      newvec[ivar]->SetFillColor(color);
+    }else{
+      newvec.push_back(0);
     }
   }
   for (int i = 0; i < tokens.size()/2; ++i)
@@ -974,10 +970,13 @@ observable histSaver::templatesample(TString fromregion, TString variation,strin
       }
     }
   }
-  if(sampleiter == plot_lib.end()){
+  if(sampexist){
     for(int ivar = 0; ivar < v.size(); ivar++){
-      plot_lib[newsamplename][toregion][variation] = newvec;
+      plot_lib[newsamplename][toregion][variation][ivar]->Add(newvec[ivar]);
+      deletepointer(newvec[ivar]);
     }
+  }else{
+      plot_lib[newsamplename][toregion][variation] = newvec;
   }
   return scalefactor;
 }
