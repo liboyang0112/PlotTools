@@ -27,12 +27,13 @@ void ATLASLabel(Double_t x,Double_t y,const char* text,Color_t color, const char
     l.DrawLatex(x,y,"ATLAS");
 //     p.SetTextFont(42);
     p.DrawLatex(x+delx,y,text);
+    y-=dely;
   }
   if(channelname){
-    p.DrawLatex(x,y-dely,lumi);
-    p.DrawLatex(x,y-2*dely,analysis);
+    p.DrawLatex(x,y,lumi);
+    p.DrawLatex(x,y-dely,analysis);
     p.SetTextSize(23);
-    p.DrawLatex(x,y-3*dely-0.02,channelname);
+    p.DrawLatex(x,y-2*dely-0.02,channelname);
   }
 }
 
