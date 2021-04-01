@@ -56,6 +56,7 @@ public:
   TString analysis;
   TString workflow;
   bool doROC;
+  bool useSOB;
   TString nominalfilename;
   TString createdNP;
   int debug;

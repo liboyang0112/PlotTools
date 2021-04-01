@@ -15,6 +15,7 @@ histSaver::histSaver(TString _outputfilename) {
   nominalfilename = "";
   nregion = 0;
   blinding = 0;
+  useSOB = 1;
   fweight = NULL;
   dweight = NULL;
   weight_type = 0;
@@ -1170,7 +1171,10 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
 
         if(blinding && dataref){
           for(Int_t j=1; j<v.at(i)->nbins/v[i]->rebin+1; j++) {
-            if(histoverlaytmp->GetBinContent(j)/sqrt(hmc.GetBinContent(j)) > blinding) {
+            if(
+              ( useSOB && histoverlaytmp->GetBinContent(j)/hmc.GetBinContent(j) > blinding) ||
+              (!useSOB && histoverlaytmp->GetBinContent(j)/sqrt(hmc.GetBinContent(j)) > blinding)
+            ) {
               datahist->SetBinContent(j,0);
               datahist->SetBinError(j,0);
               hdataR.SetBinContent(j,0);
