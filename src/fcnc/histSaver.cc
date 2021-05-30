@@ -859,7 +859,7 @@ void histSaver::write_trexinput(TString NPname, TString writename, TString write
         if(NPname != "NOMINAL" && iter.first.Contains("data")) continue;
         TString filename = trexdir + "/" + v.at(i)->name + "/" + region + "/" + iter.first + ".root";
         TFile outputfile(filename, writeoption);
-        if(debug) printf("Writing to file: %s, histoname: %s\n", filename.Data(), NPname.Data());
+        if(debug) printf("Writing to file: %s, histoname: %s\n", filename.Data(), writename.Data());
         TH1D *target = grabhist(iter.first,region,NPname,i);
         if(target) {
           target->Write(writename,TObject::kWriteDelete);
