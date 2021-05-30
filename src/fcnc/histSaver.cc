@@ -972,8 +972,11 @@ observable histSaver::templatesample(TString fromregion, TString variation,strin
     }
   }
   if(sampexist){
+    auto vec  = plot_lib[newsamplename][toregion][variation];
+    if(!vec.size()) plot_lib[newsamplename][toregion][variation] = newvec;
+    else
     for(int ivar = 0; ivar < v.size(); ivar++){
-      plot_lib[newsamplename][toregion][variation][ivar]->Add(newvec[ivar]);
+      if(vec[ivar] && newvec[ivar]) vec[ivar]->Add(newvec[ivar]);
       deletepointer(newvec[ivar]);
     }
   }else{
