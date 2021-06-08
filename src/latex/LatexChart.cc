@@ -77,10 +77,12 @@ void LatexChart::print(std::string filename){
 void LatexChart::writeContent(std::vector<std::string> new_columns, std::ofstream* file){
 	(*file)<<"\\begin{tabular}{|";
 	for(auto new_column: new_columns) (*file)<<"c|";
-	(*file)<<"c|} \\hline\n";
+	if(!threelinetable) (*file)<<"c|} \\hline\n";
+	else (*file)<<"c|} \\toprule\\toprule\n";
 	//==============================column title=====================================
 	for(auto new_column: new_columns) (*file)<<" & "<<new_column;
-	(*file)<<"\\\\\\hline\n";
+	if(!threelinetable) (*file)<<"\\\\\\hline\n";
+	else "\\\\\\midrule\n";
 	//==============================table content=====================================
 	(*file)<<fixed<<setprecision(2);
 	for(auto row: rows){
@@ -108,8 +110,10 @@ void LatexChart::writeContent(std::vector<std::string> new_columns, std::ofstrea
 				}
 			}
 		}
-		(*file)<<"\\\\\\hline\n";
+		if(!threelinetable) (*file)<<"\\\\\\hline\n";
+		else (*file)<<"\\\\\n";
 	}
+	if(threelinetable) (*file)<<"\\bottomrule\\bottomrule\\\\\n";
 	(*file)<<"\\end{tabular}\n";
 }
 

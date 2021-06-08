@@ -11,6 +11,7 @@ public:
 	int debug;
 	int maxcolumn;
 	int maxrow;
+	bool threelinetable = 1;
 	std::string label;
 	std::string caption;
 	std::vector<std::string> rows;
