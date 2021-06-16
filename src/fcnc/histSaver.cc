@@ -1253,9 +1253,9 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
       if(!activeoverlay.size()) {
         cv.SaveAs(outdir + "/" + region + "/" + v.at(i)->name + ".pdf");
       }
-
+      vector<TH1D*> overlaytogetherhist;
+      TLegend *lgoverlaytogether = (TLegend*) lg1->Clone();
       for(auto histoverlay: activeoverlay){
-        
         TLegend *lgsig = (TLegend*) lg1->Clone();
         histoverlay->SetLineStyle(9);
         histoverlay->SetLineWidth(3);
@@ -1293,8 +1293,26 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
         lgsig->Draw();
         padhi->Update();
         cv.SaveAs(outdir + "/" + region + "/" + v.at(i)->name + ".pdf");
+        if(find(overlaytogether.begin(),overlaytogether.end(),histoverlay->GetName()) != overlaytogether.end()){
+          overlaytogetherhist.push_back((TH1D*)histoverlay->Clone());
+          (*(overlaytogetherhist.end()-1))->SetLineColor(kRed+overlaytogetherhist.size()-1);
+          lgoverlaytogether->AddEntry(histoverlay,(histoverlay->GetTitle() + (ratio > 0? "#times" + to_string(ratio) : "")).c_str(),"LP");
+        }
         deletepointer(histoverlay);
         deletepointer(lgsig);
+      }
+      if(overlaytogetherhist.size()){
+        for(auto hist : overlaytogetherhist){
+          hist->Draw("hist same");
+        }
+        lgoverlaytogether->SetBorderSize(0);
+        lgoverlaytogether->Draw();
+        padhi->Update();
+        cv.SaveAs(outdir + "/" + region + "/" + v.at(i)->name + ".pdf");
+        deletepointer(lgoverlaytogether);
+        for(auto hist : overlaytogetherhist){
+          deletepointer(hist);
+        }
       }
       deletepointer(hsk);
       deletepointer(lg1);

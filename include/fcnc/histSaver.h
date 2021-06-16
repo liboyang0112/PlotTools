@@ -49,6 +49,7 @@ public:
   Double_t* dweight;
   int weight_type;
   std::vector<TString> overlaysamples;
+  std::vector<TString> overlaytogether;
   TFile* inputfile;
   std::map<TString,TFile*> outputfile;
   std::map<TString,std::string> regioninTables;
