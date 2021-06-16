@@ -9,6 +9,7 @@
 
 using namespace std;
 histSaver::histSaver(TString _outputfilename) {
+  BOSRatio = 3;
   outputfilename = _outputfilename;
   trexdir = "trexinputs";
   inputfilename = "hists";
@@ -1262,7 +1263,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
         histoverlay->SetLineColor(kRed);
         histoverlay->SetFillColor(0);
         histoverlay->SetMinimum(0);
-        ratio = histmax/histoverlay->GetMaximum()/3;
+        ratio = histmax/histoverlay->GetMaximum()/BOSRatio;
         if(ratio>10) ratio -= ratio%10;
         if(ratio>100) ratio -= ratio%100;
         if(ratio>1000) ratio -= ratio%1000;

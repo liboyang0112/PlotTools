@@ -42,7 +42,7 @@ public:
   TString checkread_variation;
   bool checkread_variable;
   int checkread_ibin;
-
+  float BOSRatio;
   int nregion;
   float blinding;
   Float_t* fweight;
