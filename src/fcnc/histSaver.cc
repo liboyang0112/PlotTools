@@ -1169,7 +1169,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
           if(debug) printf("histSaver::plot_stack(): Warning: signal hist %s not found\n", overlaysample.Data());
           continue;
         }
-        histoverlaytmp = (TH1D*)histoverlaytmp->Clone();
+        histoverlaytmp = (TH1D*)histoverlaytmp->Clone(overlaysample);
         if(v.at(i)->rebin != 1) histoverlaytmp->Rebin(v.at(i)->rebin);
         activeoverlay.push_back(histoverlaytmp);
 
