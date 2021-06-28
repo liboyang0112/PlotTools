@@ -76,13 +76,16 @@ void LatexChart::print(std::string filename){
 
 void LatexChart::writeContent(std::vector<std::string> new_columns, std::ofstream* file){
 	(*file)<<"\\begin{tabular}{|";
-	for(auto new_column: new_columns) (*file)<<"c|";
+	for(auto new_column: new_columns) {
+		(*file)<<"c";
+		if(!threelinetable) (*file)<<"|";
+	}
 	if(!threelinetable) (*file)<<"c|} \\hline\n";
-	else (*file)<<"c|} \\toprule\\toprule\n";
+	else (*file)<<"c} \\toprule\\toprule\n";
 	//==============================column title=====================================
 	for(auto new_column: new_columns) (*file)<<" & "<<new_column;
 	if(!threelinetable) (*file)<<"\\\\\\hline\n";
-	else "\\\\\\midrule\n";
+	else (*file)<<"\\\\\\midrule\n";
 	//==============================table content=====================================
 	(*file)<<fixed<<setprecision(2);
 	for(auto row: rows){
