@@ -1297,7 +1297,7 @@ void histSaver::plot_stack(TString NPname, TString outdir, TString outputchartdi
         if(find(overlaytogether.begin(),overlaytogether.end(),histoverlay->GetName()) != overlaytogether.end()){
           overlaytogetherhist.push_back((TH1D*)histoverlay->Clone());
           overlaytogetherhist.back()->SetDirectory(0);
-          overlaytogetherhist.back()->SetLineColor(3+overlaytogetherhist.size());
+          overlaytogetherhist.back()->SetLineColor((overlaytogetherhist.size()>=5)*2 + overlaytogetherhist.size()+2);
           lgoverlaytogether->AddEntry(overlaytogetherhist.back(),(overlaytogetherhist.back()->GetTitle() + (ratio > 0? "#times" + to_string(ratio) : "")).c_str(),"LP");
         }
         deletepointer(histoverlay);
