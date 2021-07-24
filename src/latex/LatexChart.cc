@@ -75,7 +75,8 @@ void LatexChart::print(std::string filename){
 }
 
 void LatexChart::writeContent(std::vector<std::string> new_columns, std::ofstream* file){
-	(*file)<<"\\begin{tabular}{|";
+	(*file)<<"\\begin{tabular}{";
+        if(!threelinetable) (*file)<<"|";
 	for(auto new_column: new_columns) {
 		(*file)<<"c";
 		if(!threelinetable) (*file)<<"|";
